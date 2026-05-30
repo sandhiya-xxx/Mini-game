@@ -1,2 +1,2 @@
-# throne
-Throne Lore Master
+## Throne Lore Master - Commencing Challenge!
+
