@@ -5,21 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Throne Lore Master</title>
     <style>
-        body { font-family: sans-serif; background: #1a1a2e; color: #fff; padding: 20px; }
+        body { font-family: sans-serif; background: #1a1a2e; color: #fff; max-width: 800px; margin: 0 auto; padding: 20px; }
         h1 { color: #e94560; text-align: center; }
-        .character-card { background: #16213e; padding: 15px; margin: 10px 0; border-radius: 8px; border-left: 5px solid #e94560; }
-        .role { font-style: italic; color: #0fefca; }
+        .character-card { background: #16213e; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 5px solid #0fefca; }
+        .role { font-style: italic; color: #e94560; font-weight: bold; }
+        .faction { color: #aaa; font-size: 0.9em; }
     </style>
 </head>
 <body>
     <h1>👑 Throne Lore Master 👑</h1>
-    <div id="character-list">
-        <!-- Characters will appear here automatically later! -->
-        <div class="character-card">
-            <h3>Clay Carter</h3>
-            <p class="role">Grand Commander - The Resistance</p>
-            <p>A legendary swordsman who rallied the broken kingdoms after the fall of the capital.</p>
-        </div>
-    </div>
+    <div id="character-list">Loading characters...</div>
+
+    <script>
+        // Fetch the lore data from your JSON file
+        fetch('lore.json')
+            .then(response => response.json())
+            .then(data => {
+                const listContainer = document.getElementById('character-list');
+                listContainer.innerHTML = ''; // Clear the loading text
+
+                // Loop through every character in your database
+                data.characters.forEach(char => {
+                    const card = document.createElement('div');
+                    card.className = 'character-card';
+                    card.innerHTML = `
+                        <h3>${char.name}</h3>
+                        <p class="role">${char.role}</p>
+                        <p class="faction">Faction: ${char.faction}</p>
+                        <p>${char.bio}</p>
+                    `;
+                    listContainer.appendChild(card);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading lore:', error);
+                document.getElementById('character-list').innerText = 'Failed to load lore data.';
+            });
+    </script>
 </body>
 </html>
