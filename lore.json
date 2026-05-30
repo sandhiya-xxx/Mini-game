@@ -1,0 +1,39 @@
+{
+  "game_title": "Throne Lore Master",
+  "regions": [
+    {
+      "id": "laslan",
+      "name": "Kastleton (Laslan)",
+      "description": "A bustling port city acting as the starting bastion of hope against the dark forces.",
+      "threat_level": "Low"
+    },
+    {
+      "id": "stonegard",
+      "name": "Stonegard Wastelands",
+      "description": "A harsh, rocky desert filled with ancient monoliths and dangerous canyon predators.",
+      "threat_level": "High"
+    }
+  ],
+  "factions": [
+    {
+      "id": "arkeum_legion",
+      "name": "The Arkeum Legion",
+      "description": "The tyrannical military force seeking to conquer the continent using forbidden dark magic.",
+      "alignment": "Evil"
+    },
+    {
+      "id": "resistance",
+      "name": "The Resistance",
+      "description": "A brave coalition of knights and local heroes fighting to restore freedom to the realm.",
+      "alignment": "Good"
+    }
+  ],
+  "characters": [
+    {
+      "name": "Clay Carter",
+      "faction": "The Resistance",
+      "role": "Grand Commander",
+      "bio": "A legendary swordsman who rallied the broken kingdoms after the fall of the capital."
+    }
+  ]
+}
