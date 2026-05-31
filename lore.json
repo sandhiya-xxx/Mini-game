@@ -1,59 +1,59 @@
 {
-  "game_title": "Throne Lore Master",
+  "system_title": "Umbrella Corp - Tactical Bio-Data Archive",
   "system_config": {
-    "engine_version": "1.0.4",
+    "terminal_node": "RE-NESTOR-02",
     "copilot_optimized": true
   },
-  "regions": [
+  "hazard_zones": [
     {
-      "id": "laslan",
-      "name": "Kastleton (Laslan)",
-      "description": "A bustling port city acting as the starting bastion of hope against the dark forces.",
-      "threat_level": "Low"
+      "id": "raccoon_city",
+      "name": "Raccoon City (Downtown)",
+      "description": "Urban biological disaster zone. Complete viral outbreak confirmed. Chaos tier containment failure.",
+      "threat_level": "Catastrophic"
     },
     {
-      "id": "stonegard",
-      "name": "Stonegard Wastelands",
-      "description": "A harsh, rocky desert filled with ancient monoliths and dangerous canyon predators.",
-      "threat_level": "High"
+      "id": "spencer_mansion",
+      "name": "Arklay Laboratory (Spencer Mansion)",
+      "description": "The hidden birthplace of the T-Virus. Underground facility entry guarded by complex logic traps.",
+      "threat_level": "Extremely High"
     }
   ],
-  "characters": [
+  "subjects": [
     {
-      "name": "Clay Carter",
-      "faction": "The Resistance",
-      "role": "Grand Commander",
-      "base_hp": 120,
-      "base_atk": 18,
-      "base_def": 10,
-      "bio": "A legendary swordsman who rallied the broken kingdoms after the fall of the capital."
-    },
-    {
-      "name": "Evelyn Thorne",
-      "faction": "Independent",
-      "role": "Shadow Assassin",
-      "base_hp": 95,
-      "base_atk": 24,
-      "base_def": 6,
-      "bio": "A mercenary born in the Stonegard Wastelands. She steals imperial secrets and sells them to the highest bidder."
-    },
-    {
-      "name": "Kazar the Cruel",
-      "faction": "The Arkeum Legion",
-      "role": "Dark Archmage",
-      "base_hp": 150,
-      "base_atk": 22,
-      "base_def": 8,
-      "bio": "The ruthless leader of the legion who uses corrupted mana stones to summon colossal world bosses."
-    },
-    {
-      "name": "Tevent",
-      "faction": "Monsters",
-      "role": "The Cursed Skeleton King",
-      "base_hp": 200,
-      "base_atk": 14,
+      "name": "Leon S. Kennedy",
+      "faction": "S.T.A.R.S. / R.P.D.",
+      "role": "Survivor Officer",
+      "base_hp": 100,
+      "base_atk": 25,
       "base_def": 12,
-      "bio": "An ancient monarch resurrected by Kazar's dark magic. He haunts the desert ruins during heavy sandstorms."
+      "bio": "Rookie police officer trapped on his first day. Highly adaptable, elite marksman skills, possessive of critical escape data."
+    },
+    {
+      "name": "Jill Valentine",
+      "faction": "S.T.A.R.S. Alpha Team",
+      "role": "B.O.W. Specialist",
+      "base_hp": 110,
+      "base_atk": 22,
+      "base_def": 14,
+      "bio": "Expert in lock-picking and explosive logistics. Master survivor of the original Arklay Mountain incident."
+    },
+    {
+      "name": "Albert Wesker",
+      "faction": "Umbrella Corporation",
+      "role": " rogue Researcher",
+      "base_hp": 250,
+      "base_atk": 45,
+      "base_def": 25,
+      "bio": "Former S.T.A.R.S. leader who betrayed humanity for viral mutation evolution. Possesses super-human combat metrics."
+    },
+    {
+      "name": "Nemesis T-Type",
+      "faction": "Bio-Organic Weapon",
+      "role": "S.T.A.R.S. Hunter",
+      "base_hp": 500,
+      "base_atk": 35,
+      "base_def": 30,
+      "bio": "Experimental cyborg organism programmed exclusively to track, target, and terminate elite combat units."
     }
   ]
 }
