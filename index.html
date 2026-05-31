@@ -3,175 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Umbrella Bio-Data Archive</title>
+    <title>Resident Evil: GitHub Outbreak</title>
     <style>
         body { 
-            font-family: 'Courier New', Courier, monospace; 
-            background: linear-gradient(135deg, #050a05 0%, #0c180c 100%); 
+            font-family: 'Courier New', monospace; 
+            background: #000; 
             color: #39ff14; 
-            max-width: 900px; 
-            margin: 0 auto; 
-            padding: 40px 20px;
-            letter-spacing: 1px;
-        }
-
-        .game-banner {
             text-align: center;
-            border-bottom: 2px dashed #ff0000;
-            padding-bottom: 30px;
-            margin-bottom: 40px;
-            animation: radarPulse 4s infinite alternate;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
         }
-
-        h1 { font-size: 2.5rem; margin: 0; color: #ff3333; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,0,0,0.5); }
-        .subtitle { font-size: 0.9rem; color: #39ff14; font-weight: bold; margin-top: 10px; }
-
-        .utility-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            background: rgba(10, 30, 10, 0.7);
-            padding: 15px;
-            border-radius: 4px;
-            border: 1px solid #39ff14;
+        h1 { color: #ff3333; margin: 5px 0; text-shadow: 0 0 10px rgba(255,0,0,0.8); }
+        .hud { display: flex; justify-content: space-around; width: 600px; margin: 0 auto 10px auto; background: rgba(0,20,0,0.8); padding: 10px; border: 1px solid #39ff14; }
+        /* The actual retro game viewport monitor screen */
+        #gameCanvas {
+            background: #111;
+            border: 4px solid #ff3333;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            display: block;
+            margin: 0 auto;
         }
-
-        .search-container input {
-            width: 320px;
-            padding: 12px 20px;
-            background: #000;
-            border: 1px solid #39ff14;
-            color: #39ff14;
-            border-radius: 2px;
-            font-size: 1rem;
-            font-family: inherit;
-            outline: none;
-        }
-        .search-container input:focus { box-shadow: 0 0 15px rgba(57, 255, 20, 0.5); }
-
-        .audio-btn {
-            background: #ff3333;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-weight: bold;
-            font-family: inherit;
-            text-transform: uppercase;
-        }
-        .audio-btn:hover { background: #ff6666; }
-
-        #subject-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .subject-card { 
-            background: rgba(0, 0, 0, 0.8); 
-            padding: 25px; 
-            border-radius: 4px; 
-            border: 1px solid rgba(57, 255, 20, 0.3);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
-            transition: all 0.3s;
-        }
-        .subject-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
-            border-color: #ff3333;
-        }
-
-        .subject-card h3 { color: #fff; margin-top: 0; font-size: 1.4rem; border-bottom: 1px dashed #39ff14; padding-bottom: 10px; }
-        .role { color: #ffcc00; font-weight: bold; font-size: 0.9rem; margin: 5px 0; }
-        .faction { color: #ff3333; font-size: 0.85em; text-transform: uppercase; font-weight: bold; margin-bottom: 15px; }
-        p { color: #a5d6a7; line-height: 1.5; font-size: 0.9rem; }
-
-        @keyframes radarPulse {
-            0% { border-color: #ff0000; }
-            100% { border-color: #39ff14; }
-        }
+        .controls { color: #888; font-size: 0.85rem; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="game-banner">
-        <h1>UMBRELLA CORP. NETWORK</h1>
-        <div class="subtitle">⚠️ WARNING: BIOHAZARD DATA LEAK // FILE ACCESS RESTRICTED ⚠️</div>
+    <h1>BIOHAZARD: COGNITIVE PROTOCOL</h1>
+    <p>Utilizing GitHub Copilot Real-Time Render Engine</p>
+
+    <!-- Game Resource Monitor Displays -->
+    <div class="hud">
+        <div>VITAL SIGNS: <span id="playerStatus" style="color: #39ff14; font-weight: bold;">FINE</span></div>
+        <div>SCORE TIME: <span id="gameScore" style="color: #fff;">0</span>s</div>
+        <div>THREAT LEVEL: <span style="color: #ff3333; font-weight: bold;">CRITICAL</span></div>
     </div>
 
-    <div class="utility-bar">
-        <div class="search-container">
-            <input type="text" id="searchBar" placeholder="Search Database (Name/Faction)...">
-        </div>
-        <div>
-            <button class="audio-btn" id="audioToggle">Siren Audio: OFF</button>
-        </div>
+    <!-- The Actual Interactive Gameplay Screen Render Canvas Grid -->
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+
+    <div class="controls">
+        🏃 CONTROL LOGIC: Use <b>ARROW KEYS</b> or <b>WASD</b> on your keyboard to navigate Leon away from Nemesis!
     </div>
-
-    <div id="subject-list">Analyzing core memory channels...</div>
-
-    <!-- Retro atmospheric music link for full simulation theme -->
-    <audio id="bgm" loop src="https://soundhelix.com"></audio>
 
     <script>
-        let allSubjects = [];
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
 
-        fetch('outbreak_files.json')
-            .then(response => response.json())
-            .then(data => {
-                allSubjects = data.subjects;
-                displaySubjects(allSubjects);
-            })
-            .catch(error => {
-                console.error('Terminal Link failure:', error);
-                document.getElementById('subject-list').innerText = 'CRITICAL ERROR: Connection to mainframe dropped.';
-            });
+        // Game Memory Engine Coordinates Mapping Configuration Variables
+        let score = 0;
+        let gameOver = false;
 
-        function displaySubjects(subjects) {
-            const listContainer = document.getElementById('subject-list');
-            listContainer.innerHTML = ''; 
+        const player = {
+            x: 100,
+            y: 200,
+            size: 15,
+            speed: 4,
+            color: "#00a2ff" // Blue pixel represent Leon S. Kennedy
+        };
 
-            if(subjects.length === 0) {
-                listContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #ff3333;">NO DATA RECORDS FOUND IN ARCHIVE INTERFACES.</p>';
+        const nemesis = {
+            x: 500,
+            y: 200,
+            size: 22,
+            speed: 1.8,
+            color: "#ff3333" // Big angry red monster box tracking player coordinates
+        };
+
+        // Standard Keyboard Input Handling Matrices Array Map
+        const keys = {};
+        window.addEventListener("keydown", e => keys[e.key] = true);
+        window.addEventListener("keyup", e => keys[e.key] = false);
+
+        // Core Real-Time Gameplay Logic Calculation Loop Engine
+        function updateGameMechanics() {
+            if (gameOver) return;
+
+            // Process Player Horizontal / Vertical Grid Traversal Coordinates
+            if (keys["ArrowUp"] || keys["w"] || keys["W"]) player.y -= player.speed;
+            if (keys["ArrowDown"] || keys["s"] || keys["S"]) player.y += player.speed;
+            if (keys["ArrowLeft"] || keys["a"] || keys["A"]) player.x -= player.speed;
+            if (keys["ArrowRight"] || keys["d"] || keys["D"]) player.x += player.speed;
+
+            // Enforce Hard Screen Boundary Containment Logic Locks
+            player.x = Math.max(player.size, Math.min(canvas.width - player.size, player.x));
+            player.y = Math.max(player.size, Math.min(canvas.height - player.size, player.y));
+
+            // Basic Tracking AI: Nemesis slowly calculates angle and moves toward Player
+            if (nemesis.x < player.x) nemesis.x += nemesis.speed;
+            if (nemesis.x > player.x) nemesis.x -= nemesis.speed;
+            if (nemesis.y < player.y) nemesis.y += nemesis.speed;
+            if (nemesis.y > player.y) nemesis.y -= nemesis.speed;
+
+            // Increment Operational Challenge Survival Points
+            score += 1;
+            document.getElementById("gameScore").innerText = Math.floor(score / 60);
+
+            // Pathfinding Raycast Distance Check Collision Evaluation Loop
+            const dx = player.x - nemesis.x;
+            const dy = player.y - nemesis.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Threat level indicators based on distance
+            if (distance < 100) {
+                document.getElementById("playerStatus").innerText = "DANGER";
+                document.getElementById("playerStatus").style.color = "#ff3333";
+            } else if (distance < 220) {
+                document.getElementById("playerStatus").innerText = "CAUTION";
+                document.getElementById("playerStatus").style.color = "#ffcc00";
+            } else {
+                document.getElementById("playerStatus").innerText = "FINE";
+                document.getElementById("playerStatus").style.color = "#39ff14";
+            }
+
+            // Hitbox Overlap Collision Condition Check
+            if (distance < (player.size + nemesis.size)) {
+                gameOver = true;
+                document.getElementById("playerStatus").innerText = "DECEASED";
+            }
+        }
+
+        // Hardware Screen Refresh Synchronization Draw Pipeline 
+        function renderGraphicsDisplay() {
+            // Flash clear screen buffer canvas block
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Subtle Tactical Floor Grid Pattern background layout
+            ctx.strokeStyle = "rgba(57, 255, 20, 0.05)";
+            ctx.lineWidth = 1;
+            for(let i=0; i<canvas.width; i+=40) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+            }
+            for(let j=0; j<canvas.height; j+=40) {
+                ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
+            }
+
+            // Draw Player Entity Component Node (Leon)
+            ctx.fillStyle = player.color;
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = "#fff";
+            ctx.stroke();
+
+            // Draw Enemy Tracking Entity Node (Nemesis Boss)
+            ctx.fillStyle = nemesis.color;
+            ctx.fillRect(nemesis.x - nemesis.size, nemesis.y - nemesis.size, nemesis.size * 2, nemesis.size * 2);
+            ctx.strokeStyle = "#ff0000";
+            ctx.strokeRect(nemesis.x - nemesis.size, nemesis.y - nemesis.size, nemesis.size * 2, nemesis.size * 2);
+
+            // Handle Render Layer State Interruption for Game Over Events
+            if (gameOver) {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.85)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = "#ff0000";
+                ctx.font = "bold 40px 'Courier New'";
+                ctx.fillText("YOU DIED", canvas.width/2 - 100, canvas.height/2);
+                
+                ctx.fillStyle = "#fff";
+                ctx.font = "16px 'Courier New'";
+                ctx.fillText("Refresh browser page to restart systemic sequence.", canvas.width/2 - 220, canvas.height/2 + 40);
                 return;
             }
 
-            subjects.forEach(sub => {
-                const card = document.createElement('div');
-                card.className = 'subject-card';
-                card.innerHTML = `
-                    <h3>${sub.name}</h3>
-                    <p class="role">☣️ Role: ${sub.role}</p>
-                    <p class="faction">🚨 Target Faction: ${sub.faction}</p>
-                    <p>${sub.bio}</p>
-                `;
-                listContainer.appendChild(card);
-            });
+            // Request next frame array loop draw execution cycle
+            requestAnimationFrame(gameLoopExecutionCycle);
         }
 
-        document.getElementById('searchBar').addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            const filtered = allSubjects.filter(sub => 
-                sub.name.toLowerCase().includes(query) || 
-                sub.faction.toLowerCase().includes(query)
-            );
-            displaySubjects(filtered);
-        });
+        // Standard Orchestration Game Loop Structure Pattern Execution Module
+        function gameLoopExecutionCycle() {
+            updateGameMechanics();
+            renderGraphicsDisplay();
+        }
 
-        const bgm = document.getElementById('bgm');
-        const audioBtn = document.getElementById('audioToggle');
-        audioBtn.addEventListener('click', () => {
-            if (bgm.paused) {
-                bgm.play().catch(err => console.log("Audio initialization override applied."));
-                audioBtn.innerText = "Siren Audio: ON";
-                audioBtn.style.background = "#39ff14";
-            } else {
-                bgm.pause();
-                audioBtn.innerText = "Siren Audio: OFF";
-                audioBtn.style.background = "#ff3333";
-            }
-        });
+        // Boot system pipeline
+        gameLoopExecutionCycle();
     </script>
 </body>
 </html>
