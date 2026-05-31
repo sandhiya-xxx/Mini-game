@@ -1,5 +1,9 @@
 {
   "game_title": "Throne Lore Master",
+  "system_config": {
+    "engine_version": "1.0.4",
+    "copilot_optimized": true
+  },
   "regions": [
     {
       "id": "laslan",
@@ -14,26 +18,42 @@
       "threat_level": "High"
     }
   ],
-  "factions": [
-    {
-      "id": "arkeum_legion",
-      "name": "The Arkeum Legion",
-      "description": "The tyrannical military force seeking to conquer the continent using forbidden dark magic.",
-      "alignment": "Evil"
-    },
-    {
-      "id": "resistance",
-      "name": "The Resistance",
-      "description": "A brave coalition of knights and local heroes fighting to restore freedom to the realm.",
-      "alignment": "Good"
-    }
-  ],
   "characters": [
     {
       "name": "Clay Carter",
       "faction": "The Resistance",
       "role": "Grand Commander",
+      "base_hp": 120,
+      "base_atk": 18,
+      "base_def": 10,
       "bio": "A legendary swordsman who rallied the broken kingdoms after the fall of the capital."
+    },
+    {
+      "name": "Evelyn Thorne",
+      "faction": "Independent",
+      "role": "Shadow Assassin",
+      "base_hp": 95,
+      "base_atk": 24,
+      "base_def": 6,
+      "bio": "A mercenary born in the Stonegard Wastelands. She steals imperial secrets and sells them to the highest bidder."
+    },
+    {
+      "name": "Kazar the Cruel",
+      "faction": "The Arkeum Legion",
+      "role": "Dark Archmage",
+      "base_hp": 150,
+      "base_atk": 22,
+      "base_def": 8,
+      "bio": "The ruthless leader of the legion who uses corrupted mana stones to summon colossal world bosses."
+    },
+    {
+      "name": "Tevent",
+      "faction": "Monsters",
+      "role": "The Cursed Skeleton King",
+      "base_hp": 200,
+      "base_atk": 14,
+      "base_def": 12,
+      "bio": "An ancient monarch resurrected by Kazar's dark magic. He haunts the desert ruins during heavy sandstorms."
     }
   ]
 }
