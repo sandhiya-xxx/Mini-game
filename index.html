@@ -3,191 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Throne Lore Master</title>
+    <title>Umbrella Bio-Data Archive</title>
     <style>
-        /* Immersive Dark Game Background and Ambient Text Styles */
         body { 
-            font-family: 'Cinzel', 'Georgia', serif; 
-            background: linear-gradient(135deg, #0b0c10 0%, #1f2833 100%); 
-            color: #c5a880; 
+            font-family: 'Courier New', Courier, monospace; 
+            background: linear-gradient(135deg, #050a05 0%, #0c180c 100%); 
+            color: #39ff14; 
             max-width: 900px; 
             margin: 0 auto; 
             padding: 40px 20px;
             letter-spacing: 1px;
         }
 
-        /* Animated Glowing Cinematic Title Banner */
         .game-banner {
             text-align: center;
-            border-bottom: 2px solid #c5a880;
+            border-bottom: 2px dashed #ff0000;
             padding-bottom: 30px;
             margin-bottom: 40px;
-            text-shadow: 0 0 10px rgba(197, 168, 128, 0.5);
-            animation: pulseGlow 3s infinite alternate;
+            animation: radarPulse 4s infinite alternate;
         }
 
-        h1 { font-size: 3rem; margin: 0; color: #fff; text-transform: uppercase; }
-        .subtitle { font-size: 1rem; color: #45f3ff; text-transform: uppercase; font-weight: bold; }
+        h1 { font-size: 2.5rem; margin: 0; color: #ff3333; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,0,0,0.5); }
+        .subtitle { font-size: 0.9rem; color: #39ff14; font-weight: bold; margin-top: 10px; }
 
-        /* Premium Tactical Utility Bar for Audio Controls and Interactive Input */
         .utility-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            background: rgba(22, 33, 62, 0.6);
+            background: rgba(10, 30, 10, 0.7);
             padding: 15px;
-            border-radius: 6px;
-            border: 1px solid #c5a880;
-        }
-
-        /* Custom Highly Visual Search Bar */
-        .search-container input {
-            width: 300px;
-            padding: 12px 20px;
-            background: #0b0c10;
-            border: 1px solid #45f3ff;
-            color: #fff;
             border-radius: 4px;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
+            border: 1px solid #39ff14;
         }
-        .search-container input:focus { box-shadow: 0 0 15px rgba(69, 243, 255, 0.4); }
 
-        /* Game Sound Toggle UI Button Component */
+        .search-container input {
+            width: 320px;
+            padding: 12px 20px;
+            background: #000;
+            border: 1px solid #39ff14;
+            color: #39ff14;
+            border-radius: 2px;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+        }
+        .search-container input:focus { box-shadow: 0 0 15px rgba(57, 255, 20, 0.5); }
+
         .audio-btn {
-            background: #e94560;
-            color: #fff;
+            background: #ff3333;
+            color: #000;
             border: none;
             padding: 10px 20px;
-            border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
+            font-family: inherit;
             text-transform: uppercase;
         }
-        .audio-btn:hover { background: #ff2a51; }
+        .audio-btn:hover { background: #ff6666; }
 
-        /* Cyber-Fantasy Styled Dynamic Profile Roster Cards */
-        #character-list {
+        #subject-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
         }
 
-        .character-card { 
-            background: linear-gradient(180deg, #16213e 0%, #0f172a 100%); 
+        .subject-card { 
+            background: rgba(0, 0, 0, 0.8); 
             padding: 25px; 
-            border-radius: 12px; 
-            border: 1px solid rgba(197, 168, 128, 0.2);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
+            border-radius: 4px; 
+            border: 1px solid rgba(57, 255, 20, 0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+            transition: all 0.3s;
         }
-        .character-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(69, 243, 255, 0.2);
-            border-color: #45f3ff;
+        .subject-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            border-color: #ff3333;
         }
 
-        .character-card h3 { color: #fff; margin-top: 0; font-size: 1.5rem; border-bottom: 1px solid rgba(197, 168, 128, 0.3); padding-bottom: 10px; }
-        .role { font-style: italic; color: #45f3ff; font-weight: bold; font-size: 0.9rem; }
-        .faction { color: #e94560; font-size: 0.85em; text-transform: uppercase; font-weight: 600; margin-bottom: 15px; }
-        p { color: #a3b8cc; line-height: 1.6; font-size: 0.95rem; }
+        .subject-card h3 { color: #fff; margin-top: 0; font-size: 1.4rem; border-bottom: 1px dashed #39ff14; padding-bottom: 10px; }
+        .role { color: #ffcc00; font-weight: bold; font-size: 0.9rem; margin: 5px 0; }
+        .faction { color: #ff3333; font-size: 0.85em; text-transform: uppercase; font-weight: bold; margin-bottom: 15px; }
+        p { color: #a5d6a7; line-height: 1.5; font-size: 0.9rem; }
 
-        /* Keyframe Animation Utility Logic */
-        @keyframes pulseGlow {
-            0% { text-shadow: 0 0 10px rgba(197, 168, 128, 0.3); }
-            100% { text-shadow: 0 0 25px rgba(69, 243, 255, 0.6); }
+        @keyframes radarPulse {
+            0% { border-color: #ff0000; }
+            100% { border-color: #39ff14; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Cinematic Main Game Header Block Component -->
     <div class="game-banner">
-        <h1>Throne Lore Master</h1>
-        <div class="subtitle">Archival System v1.0.4 // Synchronized Codex</div>
+        <h1>UMBRELLA CORP. NETWORK</h1>
+        <div class="subtitle">⚠️ WARNING: BIOHAZARD DATA LEAK // FILE ACCESS RESTRICTED ⚠️</div>
     </div>
 
-    <!-- Interactive Interactive Control Panel Segment -->
     <div class="utility-bar">
         <div class="search-container">
-            <input type="text" id="searchBar" placeholder="Search Archives (Name/Faction)...">
+            <input type="text" id="searchBar" placeholder="Search Database (Name/Faction)...">
         </div>
         <div>
-            <!-- Synthetic Game Ambience Loop Trigger Mechanism -->
-            <button class="audio-btn" id="audioToggle">Ambience: OFF</button>
+            <button class="audio-btn" id="audioToggle">Siren Audio: OFF</button>
         </div>
     </div>
 
-    <!-- Main Live Population Field Array -->
-    <div id="character-list">System Loading...</div>
+    <div id="subject-list">Analyzing core memory channels...</div>
 
-    <!-- Audio Synthesis Engine Hook Source -->
+    <!-- Retro atmospheric music link for full simulation theme -->
     <audio id="bgm" loop src="https://soundhelix.com"></audio>
 
     <script>
-        let allCharacters = [];
+        let allSubjects = [];
 
-        // Dynamic Database Data Sync Pipeline Fetch Routine
-        fetch('lore.json')
+        fetch('outbreak_files.json')
             .then(response => response.json())
             .then(data => {
-                allCharacters = data.characters;
-                displayCharacters(allCharacters);
+                allSubjects = data.subjects;
+                displaySubjects(allSubjects);
             })
             .catch(error => {
-                console.error('Error fetching system logs:', error);
-                document.getElementById('character-list').innerText = 'Data connection lost. Check core database links.';
+                console.error('Terminal Link failure:', error);
+                document.getElementById('subject-list').innerText = 'CRITICAL ERROR: Connection to mainframe dropped.';
             });
 
-        // Dynamic Interface Render & Display Matrix Manipulation Routine
-        function displayCharacters(characters) {
-            const listContainer = document.getElementById('character-list');
+        function displaySubjects(subjects) {
+            const listContainer = document.getElementById('subject-list');
             listContainer.innerHTML = ''; 
 
-            if(characters.length === 0) {
-                listContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #e94560;">No archive logs match query filters.</p>';
+            if(subjects.length === 0) {
+                listContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #ff3333;">NO DATA RECORDS FOUND IN ARCHIVE INTERFACES.</p>';
                 return;
             }
 
-            characters.forEach(char => {
+            subjects.forEach(sub => {
                 const card = document.createElement('div');
-                card.className = 'character-card';
+                card.className = 'subject-card';
                 card.innerHTML = `
-                    <h3>${char.name}</h3>
-                    <p class="role">⚡ ${char.role}</p>
-                    <p class="faction">🛡️ Faction: ${char.faction}</p>
-                    <p>${char.bio}</p>
+                    <h3>${sub.name}</h3>
+                    <p class="role">☣️ Role: ${sub.role}</p>
+                    <p class="faction">🚨 Target Faction: ${sub.faction}</p>
+                    <p>${sub.bio}</p>
                 `;
                 listContainer.appendChild(card);
             });
         }
 
-        // Live Dynamic String Evaluator Implementation Logic
         document.getElementById('searchBar').addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase();
-            const filtered = allCharacters.filter(char => 
-                char.name.toLowerCase().includes(query) || 
-                char.faction.toLowerCase().includes(query)
+            const filtered = allSubjects.filter(sub => 
+                sub.name.toLowerCase().includes(query) || 
+                sub.faction.toLowerCase().includes(query)
             );
-            displayCharacters(filtered);
+            displaySubjects(filtered);
         });
 
-        // Web Audio Context Interactive Interface Activation Controller
         const bgm = document.getElementById('bgm');
         const audioBtn = document.getElementById('audioToggle');
         audioBtn.addEventListener('click', () => {
             if (bgm.paused) {
-                bgm.play().catch(err => console.log("User gesture requirements trigger blocked autoplay."));
-                audioBtn.innerText = "Ambience: ON";
-                audioBtn.style.background = "#0fefca";
+                bgm.play().catch(err => console.log("Audio initialization override applied."));
+                audioBtn.innerText = "Siren Audio: ON";
+                audioBtn.style.background = "#39ff14";
             } else {
                 bgm.pause();
-                audioBtn.innerText = "Ambience: OFF";
-                audioBtn.style.background = "#e94560";
+                audioBtn.innerText = "Siren Audio: OFF";
+                audioBtn.style.background = "#ff3333";
             }
         });
     </script>
