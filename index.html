@@ -5,42 +5,191 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Throne Lore Master</title>
     <style>
-        body { font-family: sans-serif; background: #1a1a2e; color: #fff; max-width: 800px; margin: 0 auto; padding: 20px; }
-        h1 { color: #e94560; text-align: center; }
-        .character-card { background: #16213e; padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 5px solid #0fefca; }
-        .role { font-style: italic; color: #e94560; font-weight: bold; }
-        .faction { color: #aaa; font-size: 0.9em; }
+        /* Immersive Dark Game Background and Ambient Text Styles */
+        body { 
+            font-family: 'Cinzel', 'Georgia', serif; 
+            background: linear-gradient(135deg, #0b0c10 0%, #1f2833 100%); 
+            color: #c5a880; 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 40px 20px;
+            letter-spacing: 1px;
+        }
+
+        /* Animated Glowing Cinematic Title Banner */
+        .game-banner {
+            text-align: center;
+            border-bottom: 2px solid #c5a880;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px rgba(197, 168, 128, 0.5);
+            animation: pulseGlow 3s infinite alternate;
+        }
+
+        h1 { font-size: 3rem; margin: 0; color: #fff; text-transform: uppercase; }
+        .subtitle { font-size: 1rem; color: #45f3ff; text-transform: uppercase; font-weight: bold; }
+
+        /* Premium Tactical Utility Bar for Audio Controls and Interactive Input */
+        .utility-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: rgba(22, 33, 62, 0.6);
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #c5a880;
+        }
+
+        /* Custom Highly Visual Search Bar */
+        .search-container input {
+            width: 300px;
+            padding: 12px 20px;
+            background: #0b0c10;
+            border: 1px solid #45f3ff;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .search-container input:focus { box-shadow: 0 0 15px rgba(69, 243, 255, 0.4); }
+
+        /* Game Sound Toggle UI Button Component */
+        .audio-btn {
+            background: #e94560;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .audio-btn:hover { background: #ff2a51; }
+
+        /* Cyber-Fantasy Styled Dynamic Profile Roster Cards */
+        #character-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .character-card { 
+            background: linear-gradient(180deg, #16213e 0%, #0f172a 100%); 
+            padding: 25px; 
+            border-radius: 12px; 
+            border: 1px solid rgba(197, 168, 128, 0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .character-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(69, 243, 255, 0.2);
+            border-color: #45f3ff;
+        }
+
+        .character-card h3 { color: #fff; margin-top: 0; font-size: 1.5rem; border-bottom: 1px solid rgba(197, 168, 128, 0.3); padding-bottom: 10px; }
+        .role { font-style: italic; color: #45f3ff; font-weight: bold; font-size: 0.9rem; }
+        .faction { color: #e94560; font-size: 0.85em; text-transform: uppercase; font-weight: 600; margin-bottom: 15px; }
+        p { color: #a3b8cc; line-height: 1.6; font-size: 0.95rem; }
+
+        /* Keyframe Animation Utility Logic */
+        @keyframes pulseGlow {
+            0% { text-shadow: 0 0 10px rgba(197, 168, 128, 0.3); }
+            100% { text-shadow: 0 0 25px rgba(69, 243, 255, 0.6); }
+        }
     </style>
 </head>
 <body>
-    <h1>👑 Throne Lore Master 👑</h1>
-    <div id="character-list">Loading characters...</div>
+
+    <!-- Cinematic Main Game Header Block Component -->
+    <div class="game-banner">
+        <h1>Throne Lore Master</h1>
+        <div class="subtitle">Archival System v1.0.4 // Synchronized Codex</div>
+    </div>
+
+    <!-- Interactive Interactive Control Panel Segment -->
+    <div class="utility-bar">
+        <div class="search-container">
+            <input type="text" id="searchBar" placeholder="Search Archives (Name/Faction)...">
+        </div>
+        <div>
+            <!-- Synthetic Game Ambience Loop Trigger Mechanism -->
+            <button class="audio-btn" id="audioToggle">Ambience: OFF</button>
+        </div>
+    </div>
+
+    <!-- Main Live Population Field Array -->
+    <div id="character-list">System Loading...</div>
+
+    <!-- Audio Synthesis Engine Hook Source -->
+    <audio id="bgm" loop src="https://soundhelix.com"></audio>
 
     <script>
-        // Fetch the lore data from your JSON file
+        let allCharacters = [];
+
+        // Dynamic Database Data Sync Pipeline Fetch Routine
         fetch('lore.json')
             .then(response => response.json())
             .then(data => {
-                const listContainer = document.getElementById('character-list');
-                listContainer.innerHTML = ''; // Clear the loading text
-
-                // Loop through every character in your database
-                data.characters.forEach(char => {
-                    const card = document.createElement('div');
-                    card.className = 'character-card';
-                    card.innerHTML = `
-                        <h3>${char.name}</h3>
-                        <p class="role">${char.role}</p>
-                        <p class="faction">Faction: ${char.faction}</p>
-                        <p>${char.bio}</p>
-                    `;
-                    listContainer.appendChild(card);
-                });
+                allCharacters = data.characters;
+                displayCharacters(allCharacters);
             })
             .catch(error => {
-                console.error('Error loading lore:', error);
-                document.getElementById('character-list').innerText = 'Failed to load lore data.';
+                console.error('Error fetching system logs:', error);
+                document.getElementById('character-list').innerText = 'Data connection lost. Check core database links.';
             });
+
+        // Dynamic Interface Render & Display Matrix Manipulation Routine
+        function displayCharacters(characters) {
+            const listContainer = document.getElementById('character-list');
+            listContainer.innerHTML = ''; 
+
+            if(characters.length === 0) {
+                listContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #e94560;">No archive logs match query filters.</p>';
+                return;
+            }
+
+            characters.forEach(char => {
+                const card = document.createElement('div');
+                card.className = 'character-card';
+                card.innerHTML = `
+                    <h3>${char.name}</h3>
+                    <p class="role">⚡ ${char.role}</p>
+                    <p class="faction">🛡️ Faction: ${char.faction}</p>
+                    <p>${char.bio}</p>
+                `;
+                listContainer.appendChild(card);
+            });
+        }
+
+        // Live Dynamic String Evaluator Implementation Logic
+        document.getElementById('searchBar').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = allCharacters.filter(char => 
+                char.name.toLowerCase().includes(query) || 
+                char.faction.toLowerCase().includes(query)
+            );
+            displayCharacters(filtered);
+        });
+
+        // Web Audio Context Interactive Interface Activation Controller
+        const bgm = document.getElementById('bgm');
+        const audioBtn = document.getElementById('audioToggle');
+        audioBtn.addEventListener('click', () => {
+            if (bgm.paused) {
+                bgm.play().catch(err => console.log("User gesture requirements trigger blocked autoplay."));
+                audioBtn.innerText = "Ambience: ON";
+                audioBtn.style.background = "#0fefca";
+            } else {
+                bgm.pause();
+                audioBtn.innerText = "Ambience: OFF";
+                audioBtn.style.background = "#e94560";
+            }
+        });
     </script>
 </body>
 </html>
