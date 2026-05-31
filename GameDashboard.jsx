@@ -1,70 +1,68 @@
 import React, { useState, useEffect } from 'react';
 
 export default function GameDashboard() {
-  // Application memory management via react hook state declarations
-  const [playerGold, setPlayerGold] = useState(500);
-  const [characterPower, setCharacterPower] = useState(25);
-  const [inventory, setInventory] = useState(['Worn Iron Blade', 'Health Potion']);
-  const [combatLog, setCombatLog] = useState([]);
+  const [ammoCount, setAmmoCount] = useState(15);
+  const [infectionLevel, setInfectionLevel] = useState(5);
+  const [storageBox, setStorageBox] = useState(['Handgun Ammo', 'Green Herb']);
+  const [terminalAlerts, setTerminalAlerts] = useState([]);
 
-  // Automated passive resources generation routine
+  // Auto-increasing virus threat loop simulator
   useEffect(() => {
-    const goldTicker = setInterval(() => {
-      setPlayerGold(prev => prev + 2);
-    }, 3000);
-    return () => clearInterval(goldTicker);
+    const tVirusSpread = setInterval(() => {
+      setInfectionLevel(prev => {
+        if (prev >= 100) return 100;
+        return prev + 1;
+      });
+    }, 4000);
+    return () => clearInterval(tVirusSpread);
   }, []);
 
-  const purchaseItem = (itemName, cost, powerBonus) => {
-    if (playerGold >= cost) {
-      setPlayerGold(prev => prev - cost);
-      setCharacterPower(prev => prev + powerBonus);
-      setInventory(prev => [...prev, itemName]);
-      setCombatLog(prev => [`🛒 Acquired ${itemName} (+${powerBonus} Power)`, ...prev.slice(0, 4)]);
+  const combineHerbs = (utilityItem, infectionReduction, assetCost) => {
+    if (ammoCount >= assetCost) {
+      setAmmoCount(prev => prev - assetCost);
+      setInfectionLevel(prev => Math.max(0, prev - infectionReduction));
+      setStorageBox(prev => [...prev, utilityItem]);
+      setTerminalAlerts(prev => [`🟢 System Admin: Applied ${utilityItem} (Infection Down ${infectionReduction}%)`, ...prev.slice(0, 3)]);
     } else {
-      setCombatLog(prev => [`❌ Insufficient currency for ${itemName}`, ...prev.slice(0, 4)]);
+      setTerminalAlerts(prev => [`🔴 Error: Insufficient component material for ${utilityItem}`, ...prev.slice(0, 3)]);
     }
   };
 
   return (
-    <div style={{ background: '#111625', color: '#fff', padding: '25px', borderRadius: '12px', border: '2px solid #c5a880' }}>
-      <h2 style={{ color: '#45f3ff', borderBottom: '1px solid #45f3ff', paddingBottom: '5px' }}>🎮 ADVENTURER HUD</h2>
+    <div style={{ background: '#000', color: '#39ff14', padding: '25px', borderRadius: '4px', border: '2px solid #ff3333', fontFamily: 'monospace' }}>
+      <h2 style={{ color: '#ff3333', borderBottom: '2px dashed #ff3333', paddingBottom: '5px' }}>☣️ SURVIVAL HUD SYSTEM</h2>
       
-      {/* Dynamic Resource Stat Matrix Panel Layout */}
-      <div style={{ display: 'flex', gap: '30px', margin: '20px 0', fontSize: '1.2rem' }}>
-        <div>💰 Gold: <span style={{ color: '#ffd700', fontWeight: 'bold' }}>{playerGold}</span></div>
-        <div>⚔️ Battle Rating: <span style={{ color: '#e94560', fontWeight: 'bold' }}>{characterPower}</span></div>
+      <div style={{ display: 'flex', gap: '40px', margin: '20px 0', fontSize: '1.1rem' }}>
+        <div>💥 Available Ammo: <span style={{ color: '#fff', fontWeight: 'bold' }}>{ammoCount} RDS</span></div>
+        <div>⚠️ T-Virus Infection Rate: <span style={{ color: infectionLevel > 50 ? '#ff0000' : '#ffcc00', fontWeight: 'bold' }}>{infectionLevel}%</span></div>
       </div>
 
-      {/* Upgrades Management Control Interactivity Grid */}
       <div style={{ margin: '20px 0' }}>
-        <h3>✨ Blacksmith Armory Upgrades</h3>
+        <h3>🛠️ Item Modification & Assembly Station</h3>
         <button 
-          onClick={() => purchaseItem('Starlight Greatsword', 250, 15)}
-          style={{ padding: '10px', marginRight: '10px', background: '#e94560', color: '#fff', border: 'none', cursor: 'pointer' }}
+          onClick={() => combineHerbs('Mixed Herb (G+R)', 35, 2)}
+          style={{ padding: '10px', marginRight: '10px', background: '#006400', color: '#fff', border: '1px solid #39ff14', cursor: 'pointer' }}
         >
-          Buy Starlight Greatsword (250 Gold)
+          Mix Herbs (Costs 2 Ammo Resource)
         </button>
         <button 
-          onClick={() => purchaseItem('Arkeum Shield Mod', 150, 8)}
-          style={{ padding: '10px', background: '#0fefca', color: '#111625', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}
+          onClick={() => setAmmoCount(prev => prev + 10)}
+          style={{ padding: '10px', background: '#333', color: '#ffcc00', border: '1px solid #ffcc00', cursor: 'pointer', fontWeight: 'bold' }}
         >
-          Buy Arkeum Shield (150 Gold)
+          Scavenge Sector Floor (+10 Ammo Ammo)
         </button>
       </div>
 
-      {/* Dynamic Roster Data Array Elements Render Blocks */}
       <div style={{ marginTop: '20px' }}>
-        <h3>🎒 Equipment Pack ({inventory.length})</h3>
-        <ul style={{ listStyleType: 'square', color: '#a3b8cc' }}>
-          {inventory.map((item, index) => <li key={index}>{item}</li>)}
+        <h3>📦 Tactical Item Slots ({storageBox.length}/8)</h3>
+        <ul style={{ color: '#fff' }}>
+          {storageBox.map((item, id) => <li key={id}>[Slot {id + 1}] - {item}</li>)}
         </ul>
       </div>
 
-      {/* Live System Logging Stream Component */}
-      <div style={{ background: '#070a12', padding: '10px', borderRadius: '4px', height: '100px', overflowY: 'auto' }}>
-        <small style={{ color: '#555' }}>📡 ACTIVE SERVER LOGS:</small>
-        {combatLog.map((log, i) => <div key={i} style={{ fontSize: '0.85rem', color: '#45f3ff' }}>{log}</div>)}
+      <div style={{ background: '#111', padding: '10px', borderLeft: '3px solid #ff3333', height: '90px', overflowY: 'auto', marginTop: '20px' }}>
+        <small style={{ color: '#888' }}>📡 TERMINAL LOG STREAM:</small>
+        {terminalAlerts.map((msg, idx) => <div key={idx} style={{ fontSize: '0.85rem', color: '#39ff14' }}>{msg}</div>)}
       </div>
     </div>
   );
